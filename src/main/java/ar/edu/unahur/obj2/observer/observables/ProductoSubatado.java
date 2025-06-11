@@ -20,13 +20,17 @@ public class ProductoSubatado implements Observable{
         if(!esParticipante(oferta.getSubastador())){
             throw new OfertaSubastadorException("El subastador no participa de la subasta");
         }
+        
+        historialOfertasRecibidas.add(oferta);
+        notificarObservadores();
+    }
 
-        if (oferta.valor() == getUltimaOfertaRecibida().valor() + 10){
-            historialOfertasRecibidas.add(oferta);
-            notificarObservadores();
-        } else {
-            throw new RuntimeException("El valor de la oferta debe ser exactamente 10 más que la ultima oferta.");
-        } 
+    public List<Oferta> getHistorialDeOfertas(){
+        return historialOfertasRecibidas;
+    }
+
+    public Integer cantidadDeOfertasRecibidas(){
+        return historialOfertasRecibidas.size();
     }
 
     public Oferta getUltimaOfertaRecibida(){

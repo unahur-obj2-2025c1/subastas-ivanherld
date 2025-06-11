@@ -32,8 +32,16 @@ public class Subastador implements Observer {
         return nombreUsuario;
     }
 
+    public void resetUltimaOferta(){
+        this.ultimaOfertaRecibida = null;
+    }
+
     public void recibirOferta(Oferta oferta){
         this.ultimaOfertaRecibida = oferta;
+    }
+
+    public Oferta getUltimaOfertaRecibida(){
+        return this.ultimaOfertaRecibida; 
     }
 
     @Override
