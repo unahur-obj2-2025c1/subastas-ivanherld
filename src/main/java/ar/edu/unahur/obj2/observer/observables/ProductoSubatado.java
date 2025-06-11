@@ -1,5 +1,76 @@
 package ar.edu.unahur.obj2.observer.observables;
 
-public class ProductoSubatado {
+import java.util.ArrayList;
+import java.util.List;
 
+
+import ar.edu.unahur.obj2.observer.Oferta;
+import ar.edu.unahur.obj2.observer.excepciones.OfertaSubastadorException;
+import ar.edu.unahur.obj2.observer.observadores.Observer;
+
+
+public class ProductoSubatado implements Observable{
+    private String nombre;
+    private Integer precioInicial;
+    private List<Oferta> historialOfertasRecibidas = new ArrayList<>();
+    private List<Observer> participantes = new ArrayList<>();
+
+    public void agregarOferta(Oferta oferta){
+
+        if(!esParticipante(oferta.getSubastador())){
+            throw new OfertaSubastadorException("El subastador no participa de la subasta");
+        }
+
+        if (oferta.valor() == getUltimaOfertaRecibida().valor() + 10){
+            historialOfertasRecibidas.add(oferta);
+            notificarObservadores();
+        } else {
+            throw new RuntimeException("El valor de la oferta debe ser exactamente 10 más que la ultima oferta.");
+        } 
+    }
+
+    public Oferta getUltimaOfertaRecibida(){
+        return historialOfertasRecibidas.get(historialOfertasRecibidas.size() - 1);
+    }
+
+    public Boolean esParticipante(Observer subastador){
+        return participantes.contains(subastador);
+    }
+
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
+    public void setPrecioInicial(Integer valor){
+        this.precioInicial = valor;
+    }
+
+    public Integer getPrecioInicial(){
+        return precioInicial;
+    }
+
+    public String getNombre(){
+        return nombre;
+    }
+
+    public void reset(){
+        this.historialOfertasRecibidas = new ArrayList<>();
+        this.participantes = new ArrayList<>();
+    }
+
+    @Override
+    public void agregarObservador(Observer observador) {
+        participantes.add(observador); 
+    }
+
+    @Override
+    public void notificarObservadores() {
+        participantes.stream().forEach(o -> o.actualizar(getUltimaOfertaRecibida())); 
+    }
+
+    @Override
+    public void quitarObservador(Observer observador) {
+        participantes.remove(observador);
+        
+    }
 }
