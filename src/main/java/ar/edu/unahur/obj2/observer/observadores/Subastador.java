@@ -3,29 +3,30 @@ package ar.edu.unahur.obj2.observer.observadores;
 
 
 import ar.edu.unahur.obj2.observer.Oferta;
+import ar.edu.unahur.obj2.observer.observadores.tipoSubastadores.SubastadorArriesgado;
+import ar.edu.unahur.obj2.observer.observadores.tipoSubastadores.TipoSubastador;
 
 public class Subastador implements Observer {
-    private String nombreUsuario;
+    private final String nombreUsuario;
     private Oferta ultimaOfertaRecibida; //En realidad no se si tiene sentido esto, porque la subasta ya tiene el historial de ofertas
+    private TipoSubastador tipoSubastador;
 
-    public Oferta ofertar(){
-        Oferta oferta = new Oferta();
-        oferta.setSubastador(this);
-        if ( hayOfertaRecibida()){
-            oferta.setValor(this.ultimaOfertaRecibida.valor()+10); //Probar porque seguramente de un error
-        } else{
-            oferta.setValor(10);
-        }
-        
-        return oferta; 
+    public Subastador(String userName){
+        this.nombreUsuario = userName;
+        actualizar(new Oferta(this,0));
+        this.tipoSubastador = new SubastadorArriesgado(this);
+    }
+
+    public void setTipoSubastador(TipoSubastador tipoSubastador){
+        this.tipoSubastador = tipoSubastador;
+    }
+
+    public Oferta ofertar(){    
+        return this.tipoSubastador.ofertar(); 
     }
 
     public Boolean hayOfertaRecibida(){
         return ultimaOfertaRecibida != null;
-    }
-
-    public void setNombre(String nombre){
-        this.nombreUsuario = nombre;
     }
 
     public String getNombreUsuario(){

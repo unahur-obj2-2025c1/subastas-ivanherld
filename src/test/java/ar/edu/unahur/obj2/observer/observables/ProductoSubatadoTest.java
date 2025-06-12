@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unahur.obj2.observer.Oferta;
 import ar.edu.unahur.obj2.observer.excepciones.OfertaSubastadorException;
 import ar.edu.unahur.obj2.observer.observadores.Subastador;
+import ar.edu.unahur.obj2.observer.observadores.tipoSubastadores.SubastadorArriesgado;
+import ar.edu.unahur.obj2.observer.observadores.tipoSubastadores.SubastadorUnico;
+import ar.edu.unahur.obj2.observer.observadores.tipoSubastadores.TipoSubastador;
 
 
 
@@ -18,20 +21,20 @@ class ProductoSubatadoTest {
     Subastador gonzager;
     Subastador diazdan;
     Subastador martomau;
+    TipoSubastador subastadorUnico;
 
     @BeforeEach // Este método se ejecuta antes de cada test
     void setUp() {
         // Inicializar
         cuadroCaro = new ProductoSubatado();
 
-        gonzager = new Subastador();
-        diazdan = new Subastador();
-        martomau = new Subastador();
+        gonzager = new Subastador("gonzager");
+        diazdan = new Subastador("diazdan");
+        martomau = new Subastador("martomau");
 
-        // Le voy a setear los nombres por las dudas
-        gonzager.setNombre("gonzager");
-        diazdan.setNombre("diazdan");
-        martomau.setNombre("martomau");
+        subastadorUnico = new SubastadorUnico(martomau);
+
+        martomau.setTipoSubastador(subastadorUnico);
 
         // Se le asignan 2 subastadores
         cuadroCaro.agregarObservador(gonzager);

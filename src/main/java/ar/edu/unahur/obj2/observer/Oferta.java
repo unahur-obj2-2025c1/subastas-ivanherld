@@ -6,11 +6,8 @@ public class Oferta {
     private Subastador subastador;
     private Integer valor;
 
-    public void setSubastador(Subastador subastador){
+    public Oferta(Subastador subastador, Integer valor){
         this.subastador = subastador;
-    }
-
-    public void setValor(Integer valor){
         this.valor = valor;
     }
 
